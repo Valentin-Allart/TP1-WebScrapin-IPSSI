@@ -36,6 +36,6 @@ with st.form('Form'):
 st.download_button(
     label="Télécharger le fichier CSV",
     data=df.to_csv().encode("utf-8"),
-    file_name="articles.csv",
+    file_name="Web.csv",
     mime="text/csv",
 )
