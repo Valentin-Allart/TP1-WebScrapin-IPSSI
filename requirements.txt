@@ -3,4 +3,3 @@ plotly
 streamlit
 requests
 beautifulsoup4
-```
