@@ -9,27 +9,33 @@ df = pd.DataFrame()
 
 st.title("TP1 - WebScraping")
 
-def get_articles(searchPage, searchValue):
-    url = f'https://www.blogdumoderateur.com/page/{searchPage}/?s={searchValue}'
-    response = requests.get(url)
-    soup = BeautifulSoup(response.text, 'html.parser')
-    articles = soup.find_all('article')
+def get_articles(num_pages, searchValue):
     articles_list = []
-    for article in articles:
-        title = article.find('h3').text
-        link = article.find('a')['href']
-        image = article.find('img')['src']
-        theme = article.find('span').text
-        articles_list.append([title, link, theme,image])
-    df = pd.DataFrame(articles_list, columns=['Title', 'Link', 'Description', 'image'])
+
+    for page in range(1, num_pages + 1):
+        url = f'https://www.blogdumoderateur.com/page/{page}/?s={searchValue}'
+        response = requests.get(url)
+        soup = BeautifulSoup(response.text, 'html.parser')
+        articles = soup.find_all('article')
+
+        for article in articles:
+            title = article.find('h3').text
+            link = article.find('a')['href']
+            image = article.find('img')['src']
+            theme = article.find('span').text
+            articles_list.append([title, link, theme, image])
+
+    df = pd.DataFrame(articles_list, columns=['Title', 'Link', 'Description', 'Image'])
+    
     st.dataframe(df)
     df.to_csv("articles.csv")
+    
     return df
 
 
 with st.form('Form'):
     searchValue = st.text_input('Quel est votre recherche ?')
-    searchPage = st.number_input('Quel est le numéro de la page ?',1,25,step=1)
+    searchPage = st.slider('Combien de pages souhaitez-vous voir ?',1,99,step=1)
     if st.form_submit_button(label='Rechercher'):
         df = get_articles(searchPage, searchValue)
 
