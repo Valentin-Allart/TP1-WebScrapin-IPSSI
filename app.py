@@ -26,6 +26,6 @@ def get_articles(searchPage, searchValue):
 
 with st.form('Form'):
     searchValue = st.text_input('Quel est votre recherche ?')
-    searchPage = st.number_input('Quel est le numéro de la page ?',0,25,step=1)
+    searchPage = st.number_input('Quel est le numéro de la page ?',1,25,step=1)
     if st.form_submit_button(label='Rechercher'):
         get_articles(searchPage, searchValue)
