@@ -18,10 +18,12 @@ def get_articles(searchPage, searchValue):
     for article in articles:
         title = article.find('h3').text
         link = article.find('a')['href']
+        image = article.find('img')['src']
         theme = article.find('span').text
-        articles_list.append([title, link, theme])
-    df = pd.DataFrame(articles_list, columns=['Title', 'Link', 'Description'])
+        articles_list.append([title, link, theme,image])
+    df = pd.DataFrame(articles_list, columns=['Title', 'Link', 'Description', 'image'])
     st.dataframe(df)
+    df.to_csv("articles.csv")
     return df
 
 
