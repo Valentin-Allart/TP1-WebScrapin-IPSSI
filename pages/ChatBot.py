@@ -26,9 +26,9 @@ if prompt := st.chat_input("Quel est votre requête ?"):
         response = openai.openai_text_generator(request)
     elif commande == '/summary':
         response = openai.openai_text_summary(request)
-    elif commande == '/codex':
+    elif commande == '/code':
         response = openai.openai_codex(request)
-    elif commande == '/image':
+    elif commande == '/imagine':
         response = openai.openai_image(request)
     else:
         response = "Commande non reconnue"
