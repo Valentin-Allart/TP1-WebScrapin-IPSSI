@@ -40,17 +40,23 @@ class TextProcessor:
         ) 
         return response.choices[0].text
     
-    # def openai_codex(self, text):
-    #     response = openai.Chat.Completion.create(
-    #         engine="gpt-4",
-    #         prompt=f"Verifie ce code {text}?\n:",
-    #         temperature=0.3,
-    #         max_tokens=100,
-    #         top_p=1.0,
-    #         frequency_penalty=0.0,
-    #         presence_penalty=0.0
-    #     )
-    #     return response.choices[0].text
+    def openai_codex(self, text):
+        response = openai.chat.completions.create(
+            model="gpt-3.5-turbo",
+            messages=[
+                {
+                "role": "user",
+                "content": f"{text}"
+                }
+            ],
+            temperature=1,
+            max_tokens=256,
+            top_p=1,
+            frequency_penalty=0,
+            presence_penalty=0
+            )
+
+        return response.choices[0].text
     
     def openai_image(self,text):
         response = openai.Image.create(
