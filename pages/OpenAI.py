@@ -66,30 +66,20 @@ class TextProcessor:
         )
         return response['data'][0]['url']
     
-    def openai_jsonify(self, text):
-        # response = openai.ChatCompletion.create(
-        #     engine="gpt-3.5-turbo",
-        #     prompt=f"Create a JSON from this BeautifulSoup response:\n\n{text}",
-        #     temperature=0.3,
-        #     max_tokens=500,
-        #     top_p=1,
-        #     frequency_penalty=0,
-        #     presence_penalty=0,
-        #     stop=["\n", " Human:", " AI:"]
-        # )
-
-        #Create a response variable to store the openai reponse where it takes an BeatuifulSoup response and creates a JSON from it
+    def openai_jsonify_from_url(self, url):
         response = openai.ChatCompletion.create(
             model="gpt-3.5-turbo",
-            messages=f"Create a JSON from this BeautifulSoup response:\n\n{text}",
-            temperature=0.3,
-            max_tokens=2000,
-            top_p=1,
-            frequency_penalty=0,
-            presence_penalty=0,
-            stop=["\n", " Human:", " AI:"]
+            messages=[
+                {
+                "role": "system",
+                "content": f"JSONIFY {url}", 
+                "role": "user",
+                "content": f"{text}"
+                }
+            ],
+            temperature=1
         )
-        return response.choices[0].text
+        return response.choices[0]['message']['content']
     
 generate = TextProcessor()
 
@@ -134,4 +124,4 @@ st.header("JSON")
 with st.form('JSON'):
     text = st.text_input("Entrez votre texte")
     if st.form_submit_button(label='Générer le JSON'):
-        st.write(generate.openai_jsonify(text))
+        st.write(generate.openai_jsonify_from_url(text))
